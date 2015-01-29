@@ -8,6 +8,8 @@ Based on the [official Debian image](http://registry.hub.docker.com/_/debian/).
 
     docker run -p 80:80 -p 3306:3306 pandeiro/opensis
 
+And navigate to [localhost](http://localhost/).
+
 ## Documentation
 
 - [Debian Wiki: LAMP](https://wiki.debian.org/LaMp)
