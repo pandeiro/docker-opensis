@@ -1,0 +1,24 @@
+#!/bin/bash
+
+## Adapted from:
+##
+## https://github.com/tutumcloud/tutum-docker-lamp/blob/662bee01c5bc5885c886303dafd5329639e99074/run.sh
+
+
+sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" \
+    -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php5/apache2/php.ini
+
+
+VOLUME_HOME="/var/lib/mysql"
+if [[ ! -d $VOLUME_HOME/mysql ]]; then
+    echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
+    echo "=> Installing MySQL ..."
+    mysql_install_db > /dev/null 2>&1
+    echo "=> Done!"  
+    /create-mysql-admin-user
+else
+    echo "=> Using an existing volume of MySQL"
+fi
+
+
+/usr/bin/supervisord
